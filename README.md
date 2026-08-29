@@ -72,4 +72,5 @@ Alternatively, you can start a simple server using Python:
 # Python 3
 python -m http-server 8000
 ```
-Open `http://localhost:8000` in your web browser.
+Open `http://localhost:8000` in your web browser to run the app successfully.
+
