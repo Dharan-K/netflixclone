@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Netflix - Watch TV Shows Online, Watch Movies Online</title>
+  <!-- Google Fonts - Outfit -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Custom Styling -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- VIEW 1: Profile Selection Screen -->
+  <div id="profile-screen" class="view-section">
+    <div class="profile-container">
+      <h1 class="profile-title">Who's watching?</h1>
+      <div class="profile-list" id="profiles-list">
+        <!-- Profiles dynamically injected by JS -->
+      </div>
+      <button class="manage-profile-btn">Manage Profiles</button>
+    </div>
+  </div>
+
+  <!-- VIEW 2: Browse Screen (Netflix Main Dashboard) -->
+  <div id="browse-screen" class="view-section hidden">
+    <!-- Navigation Header -->
+    <header class="main-header" id="main-header">
+      <div class="header-left">
+        <a href="#" class="logo">
+          <svg viewBox="0 0 111 30" class="netflix-logo-svg" xmlns="http://www.w3.org/2000/svg">
+            <path d="M10.5 0h8.2v30h-8.2zM28.3 0h8.2v30h-8.2zM56.8 0h8.2v30h-8.2zM85 0h8.2v30h-8.2z" fill="#E50914"/>
+            <path d="M0 0h8.2v30H0z" fill="#E50914"/>
+            <path d="M0 0l21.2 30h8.3L8.3 0z" fill="#E50914"/>
+            <path d="M28.3 0l21.2 30h8.3L36.6 0z" fill="#E50914"/>
+            <path d="M56.8 0L78 30h8.3L65.1 0z" fill="#E50914"/>
+            <path d="M85 0l21.2 30h8.3L93.3 0z" fill="#E50914"/>
+          </svg>
+        </a>
+        <nav class="nav-links">
+          <a href="#" class="nav-link active">Home</a>
+          <a href="#" class="nav-link">TV Shows</a>
+          <a href="#" class="nav-link">Movies</a>
+          <a href="#" class="nav-link">New & Popular</a>
+          <a href="#" class="nav-link" id="my-list-nav">My List</a>
+        </nav>
+      </div>
+      <div class="header-right">
+        <!-- Search Container -->
+        <div class="search-container" id="search-container">
+          <button class="search-btn" id="search-btn">
+            <i class="fas fa-search"></i>
+          </button>
+          <input type="text" id="search-input" placeholder="Titles, people, genres..." autocomplete="off">
+          <button class="clear-search-btn id-clear-search hidden">
+            <i class="fas fa-times"></i>
+          </button>
+        </div>
+
+        <span class="nav-icon"><i class="fas fa-bell"></i></span>
+
+        <!-- Profile Menu Dropdown -->
+        <div class="header-profile" id="header-profile-menu">
+          <img src="" alt="Profile Avatar" class="header-avatar" id="current-user-avatar">
+          <i class="fas fa-caret-down caret-icon"></i>
+          <div class="profile-dropdown">
+            <div class="dropdown-arrow"></div>
+            <ul class="dropdown-list" id="dropdown-profiles-list">
+              <!-- Switch profiles options -->
+            </ul>
+            <hr class="dropdown-divider">
+            <a href="#" class="dropdown-logout" id="logout-btn">Sign out of Netflix</a>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Content Area -->
+    <main class="main-content">
+      <!-- Search Results Grid (Initially hidden) -->
+      <section id="search-results-section" class="hidden">
+        <h2 class="row-title">Search Results</h2>
+        <div class="search-grid" id="search-results-grid"></div>
+      </section>
+
+      <!-- Standard Browse Rows (Hidden when searching) -->
+      <div id="browse-content">
+        <!-- Hero Billboard -->
+        <section class="billboard" id="hero-billboard">
+          <div class="billboard-background">
+            <img src="" alt="Featured Banner" class="billboard-image" id="hero-backdrop">
+            <div class="billboard-vignette"></div>
+            <div class="billboard-bottom-vignette"></div>
+          </div>
+          <div class="billboard-info">
+            <h1 class="billboard-title" id="hero-title">Featured Movie</h1>
+            <div class="billboard-meta">
+              <span class="match-score" id="hero-match">98% Match</span>
+              <span class="meta-tag" id="hero-year">2026</span>
+              <span class="meta-rating" id="hero-rating">TV-MA</span>
+              <span class="meta-duration" id="hero-duration">2h 15m</span>
+            </div>
+            <p class="billboard-description" id="hero-desc">
+              Description of the movie goes here. Smooth cinematic storytelling at its finest.
+            </p>
+            <div class="billboard-actions">
+              <button class="btn btn-play" id="hero-play-btn">
+                <i class="fas fa-play"></i> Play
+              </button>
+              <button class="btn btn-info" id="hero-info-btn">
+                <i class="fas fa-info-circle"></i> More Info
+              </button>
+            </div>
+          </div>
+        </section>
+
+        <!-- Movie Rows Container (Rows dynamically injected by JS) -->
+        <div id="rows-container"></div>
+      </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="browse-footer">
+      <div class="footer-socials">
+        <a href="#"><i class="fab fa-facebook-f"></i></a>
+        <a href="#"><i class="fab fa-instagram"></i></a>
+        <a href="#"><i class="fab fa-twitter"></i></a>
+        <a href="#"><i class="fab fa-youtube"></i></a>
+      </div>
+      <ul class="footer-links">
+        <li><a href="#">Audio Description</a></li>
+        <li><a href="#">Help Center</a></li>
+        <li><a href="#">Gift Cards</a></li>
+        <li><a href="#">Media Center</a></li>
+        <li><a href="#">Investor Relations</a></li>
+        <li><a href="#">Jobs</a></li>
+        <li><a href="#">Terms of Use</a></li>
+        <li><a href="#">Privacy</a></li>
+        <li><a href="#">Legal Notices</a></li>
+        <li><a href="#">Cookie Preferences</a></li>
+        <li><a href="#">Corporate Information</a></li>
+        <li><a href="#">Contact Us</a></li>
+      </ul>
+      <p class="footer-copyright">&copy; 1997-2026 Netflix, Inc. Created by Antigravity.</p>
+    </footer>
+  </div>
+
+  <!-- VIEW 3: Custom Fullscreen Video Player -->
+  <div id="video-player" class="view-section hidden">
+    <video id="player-video" src="" preload="auto"></video>
+    
+    <!-- Custom Video Controls Overlay -->
+    <div class="player-controls-container">
+      <!-- Top header bar: exit and movie title -->
+      <div class="player-header">
+        <button class="player-back-btn" id="player-back-btn">
+          <i class="fas fa-arrow-left"></i>
+        </button>
+        <span class="player-movie-title" id="player-movie-title">Movie Title</span>
+      </div>
+
+      <!-- Center Play/Pause button (shows temporarily on toggle) -->
+      <div class="player-center-play hidden" id="player-center-play">
+        <i class="fas fa-play"></i>
+      </div>
+
+      <!-- Bottom controls bar -->
+      <div class="player-controls">
+        <!-- Progress bar -->
+        <div class="progress-bar-container" id="player-progress-container">
+          <div class="progress-bar-bg">
+            <div class="progress-bar-hover"></div>
+            <div class="progress-bar-filled" id="player-progress-filled">
+              <div class="progress-handle"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="controls-actions">
+          <div class="controls-left">
+            <button class="control-btn" id="player-play-btn">
+              <i class="fas fa-play"></i>
+            </button>
+            <button class="control-btn" id="player-rewind-btn">
+              <i class="fas fa-backward-10"></i>
+            </button>
+            <button class="control-btn" id="player-forward-btn">
+              <i class="fas fa-forward-10"></i>
+            </button>
+            
+            <div class="volume-container">
+              <button class="control-btn" id="player-volume-btn">
+                <i class="fas fa-volume-up"></i>
+              </button>
+              <input type="range" class="volume-slider" id="player-volume-slider" min="0" max="1" step="0.05" value="1">
+            </div>
+
+            <div class="time-display">
+              <span id="player-time-current">0:00</span>
+              <span class="time-divider">/</span>
+              <span id="player-time-duration">0:00</span>
+            </div>
+          </div>
+
+          <div class="controls-right">
+            <button class="control-btn" id="player-subtitles-btn">
+              <i class="far fa-closed-captioning"></i>
+            </button>
+            <button class="control-btn" id="player-fullscreen-btn">
+              <i class="fas fa-expand"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MOVIE DETAILS MODAL OVERLAY -->
+  <div id="details-modal" class="modal-overlay hidden">
+    <div class="modal-content">
+      <button class="modal-close-btn" id="modal-close-btn">
+        <i class="fas fa-times"></i>
+      </button>
+      
+      <div class="modal-hero">
+        <img src="" alt="Backdrop" class="modal-hero-image" id="modal-backdrop">
+        <div class="modal-hero-vignette"></div>
+        <div class="modal-hero-actions">
+          <h2 class="modal-hero-title" id="modal-title">Title</h2>
+          <div class="modal-buttons-row">
+            <button class="btn btn-play" id="modal-play-btn">
+              <i class="fas fa-play"></i> Play
+            </button>
+            <button class="modal-action-circle" id="modal-mylist-btn" title="Add to My List">
+              <i class="fas fa-plus"></i>
+            </button>
+            <button class="modal-action-circle" id="modal-like-btn" title="Rate this title">
+              <i class="far fa-thumbs-up"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-body">
+        <div class="modal-main-info">
+          <div class="modal-meta-row">
+            <span class="match-score" id="modal-match">98% Match</span>
+            <span class="meta-tag" id="modal-year">2026</span>
+            <span class="meta-rating" id="modal-rating">TV-MA</span>
+            <span class="meta-duration" id="modal-duration">2h 15m</span>
+            <span class="meta-quality">HD</span>
+          </div>
+          <p class="modal-synopsis" id="modal-desc">
+            Detailed synopsis goes here. It provides context and descriptions.
+          </p>
+        </div>
+        <div class="modal-side-info">
+          <div class="info-group">
+            <span class="info-label">Cast:</span>
+            <span class="info-values" id="modal-cast">John Doe, Jane Smith, Actor A, Actor B</span>
+          </div>
+          <div class="info-group">
+            <span class="info-label">Genres:</span>
+            <span class="info-values" id="modal-genres">Sci-Fi, Action, Thriller</span>
+          </div>
+          <div class="info-group">
+            <span class="info-label">This title is:</span>
+            <span class="info-values" id="modal-tags">Exciting, Suspenseful, Mind-Bending</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- More Like This (Dynamic Grid) -->
+      <div class="modal-recommendations">
+        <h3>More Like This</h3>
+        <div class="recommendations-grid" id="modal-recommendations-grid">
+          <!-- Populated dynamically -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Core Javascript Loader -->
+  <script type="module" src="app.js"></script>
+</body>
+</html>
